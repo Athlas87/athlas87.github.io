@@ -1,67 +1,109 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Athlas87 — Teste GitHub Pages</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-      background: linear-gradient(135deg, #0f172a, #1e3a8a);
-      color: #f8fafc;
-      text-align: center;
-      padding: 24px;
-    }
-    .card {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 16px;
-      padding: 48px 40px;
-      max-width: 520px;
-      width: 100%;
-    }
-    .ok {
-      display: inline-block;
-      width: 64px; height: 64px;
-      line-height: 64px;
-      border-radius: 50%;
-      background: #22c55e;
-      font-size: 32px;
-      margin-bottom: 24px;
-    }
-    h1 { font-size: 1.9rem; margin-bottom: 12px; }
-    p { color: #cbd5e1; line-height: 1.6; }
-    .info {
-      margin-top: 28px;
-      font-size: 0.9rem;
-      color: #94a3b8;
-    }
-    code {
-      background: rgba(0, 0, 0, 0.35);
-      padding: 2px 8px;
-      border-radius: 6px;
-      color: #e2e8f0;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monólogo</title>
+<style>
+  html, body {
+    margin: 0;
+    height: 100%;
+    background: #000;
+  }
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6vw;
+    box-sizing: border-box;
+  }
+  #texto {
+    max-width: 900px;
+    text-align: center;
+    color: #f2f2f2;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(20px, 3vw, 36px);
+    line-height: 1.6;
+    letter-spacing: .02em;
+  }
+  #texto span {
+    opacity: 0;
+    filter: blur(4px);
+    transition: opacity 1.4s ease, filter 1.4s ease;
+  }
+  #texto span.on {
+    opacity: 1;
+    filter: blur(0);
+  }
+</style>
 </head>
 <body>
-  <main class="card">
-    <div class="ok">✓</div>
-    <h1>Funcionou!</h1>
-    <p>Esta página está sendo servida pelo GitHub Pages a partir do repositório <strong>Athlas87</strong>.</p>
-    <div class="info">
-      <p>Endereço atual: <code id="host"></code></p>
-      <p>Protocolo: <code id="proto"></code></p>
-    </div>
-  </main>
-  <script>
-    document.getElementById("host").textContent = location.host;
-    document.getElementById("proto").textContent = location.protocol.replace(":", "").toUpperCase();
-  </script>
+
+<div id="texto"></div>
+
+<script>
+  const MONOLOGO = `I've||| seen| things you people wouldn't believe. Attack ships on fire off the shoulder of Orion. I watched C-beams| glitter in the dark near the Tannhäuser Gate. All those moments|| will be lost|| in time|| like|| tears|| in the rain. `;
+
+  // ===== AJUSTES =====
+  const VELOCIDADE   = 350;   // tempo entre cada palavra (ms) — maior = mais devagar
+  const PAUSA_PONTO  = 1200;  // pausa extra depois de . ! ? …
+  const PAUSA_VIRGULA = 400;  // pausa extra depois de , ; :
+  const MARCA_PAUSA  = "|";   // caractere de pausa invisível (não aparece na tela)
+  const PAUSA_MARCA  = 600;   // duração de cada marca — use || ou ||| para pausas maiores
+  const ATRASO_INICIO = 1500; // espera antes de começar (ms)
+  const REPETIR      = false; // true = recomeça sozinho no final
+  const PAUSA_FINAL  = 6000;  // tempo na tela antes de recomeçar (se REPETIR = true)
+  // ===================
+
+  const box = document.getElementById("texto");
+  const esperar = ms => new Promise(r => setTimeout(r, ms));
+
+  function montar() {
+    box.innerHTML = "";
+    const palavras = []; // { s: <span>, extra: ms }
+    const marcas = new RegExp(MARCA_PAUSA.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g");
+    let inicial = 0; // marcas antes da primeira palavra
+    MONOLOGO.trim().split("\n").forEach((linha, i, todas) => {
+      linha.trim().split(/\s+/).filter(Boolean).forEach(p => {
+        const n = (p.match(marcas) || []).length;
+        const limpa = p.replace(marcas, "");
+        if (limpa === "") {
+          if (palavras.length) palavras[palavras.length - 1].extra += n * PAUSA_MARCA;
+          else inicial += n * PAUSA_MARCA;
+          return;
+        }
+        const s = document.createElement("span");
+        s.textContent = limpa;
+        box.appendChild(s);
+        box.appendChild(document.createTextNode(" "));
+        palavras.push({ s, extra: n * PAUSA_MARCA });
+      });
+      if (i < todas.length - 1) box.appendChild(document.createElement("br"));
+    });
+    palavras.inicial = inicial;
+    return palavras;
+  }
+
+  async function tocar() {
+    do {
+      const palavras = montar();
+      await esperar(ATRASO_INICIO + palavras.inicial);
+      for (const { s, extra } of palavras) {
+        s.classList.add("on");
+        let t = VELOCIDADE + extra;
+        if (/[.!?…]$/.test(s.textContent)) t += PAUSA_PONTO;
+        else if (/[,;:]$/.test(s.textContent)) t += PAUSA_VIRGULA;
+        await esperar(t);
+      }
+      if (REPETIR) {
+        await esperar(PAUSA_FINAL);
+        palavras.forEach(({ s }) => s.classList.remove("on"));
+        await esperar(1600);
+      }
+    } while (REPETIR);
+  }
+
+  tocar();
+</script>
 </body>
 </html>
