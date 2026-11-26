@@ -3,111 +3,181 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Athlas87</title>
+<title>Suporte Remoto · WH Soluções em Informática</title>
+<meta name="description" content="Baixe o programa de suporte remoto da WH Soluções em Informática.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0083d7">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
-  html, body {
-    margin: 0;
-    height: 100%;
-    background: #000;
+  :root {
+    --azul: #0083d7;
+    --azul-escuro: #006bb3;
+    --marinho: #17263f;
+    --texto: #1b2533;
+    --texto-suave: #4f5d70;
+    --fundo: #f3f6fa;
+    --borda: #dfe6ee;
   }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
   body {
+    min-height: 100vh;
     display: flex;
+    flex-direction: column;
+    background: var(--fundo);
+    color: var(--texto);
+    font-family: "Roboto", system-ui, -apple-system, "Segoe UI", sans-serif;
+    line-height: 1.5;
+  }
+  main {
+    flex: 1;
+    width: 100%;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 56px 20px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .logo { width: min(360px, 82vw); height: auto; display: block; }
+  h1 {
+    margin: 48px 0 12px;
+    font-size: clamp(28px, 5vw, 40px);
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    color: var(--marinho);
+  }
+  .intro { margin: 0 0 32px; max-width: 520px; font-size: 18px; color: var(--texto-suave); }
+  .baixar {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 56px;
+    padding: 16px 32px;
+    border-radius: 12px;
+    background: var(--azul);
+    color: #fff;
+    font-size: 18px;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: 0 6px 18px rgba(0, 131, 215, .28);
+    transition: background .15s ease, transform .15s ease;
+  }
+  .baixar:hover { background: var(--azul-escuro); }
+  .baixar:active { transform: translateY(1px); }
+  .baixar:focus-visible { outline: 3px solid var(--marinho); outline-offset: 3px; }
+  .baixar svg { width: 22px; height: 22px; flex: none; }
+  .info { margin: 14px 0 0; font-size: 14px; color: var(--texto-suave); }
+  .aviso {
+    display: none;
+    margin: 16px 0 0;
+    padding: 10px 14px;
+    border-radius: 8px;
+    background: #fff4e0;
+    color: #6b4500;
+    font-size: 14px;
+  }
+  .aviso.on { display: block; }
+  .passos {
+    list-style: none;
+    margin: 56px 0 0;
+    padding: 0;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    text-align: left;
+  }
+  .passos li {
+    background: #fff;
+    border: 1px solid var(--borda);
+    border-radius: 14px;
+    padding: 20px;
+  }
+  .num {
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 6vw;
-    box-sizing: border-box;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    border: 2px solid var(--azul);
+    color: var(--azul);
+    font-weight: 700;
+    font-size: 15px;
   }
-  #texto {
-    max-width: 900px;
+  .passos h2 { margin: 12px 0 4px; font-size: 17px; color: var(--marinho); }
+  .passos p { margin: 0; font-size: 15px; color: var(--texto-suave); }
+  .seguranca {
+    margin: 32px 0 0;
+    max-width: 560px;
+    font-size: 14px;
+    color: var(--texto-suave);
+  }
+  footer {
+    background: var(--marinho);
+    color: #c9d6e6;
     text-align: center;
-    color: #f2f2f2;
-    font-family: Georgia, "Times New Roman", serif;
-    font-size: clamp(20px, 3vw, 36px);
-    line-height: 1.6;
-    letter-spacing: .02em;
+    padding: 22px 20px;
+    font-size: 14px;
   }
-  #texto span {
-    opacity: 0;
-    filter: blur(4px);
-    transition: opacity 1.4s ease, filter 1.4s ease;
-  }
-  #texto span.on {
-    opacity: 1;
-    filter: blur(0);
+  @media (max-width: 640px) {
+    main { padding-top: 40px; }
+    h1 { margin-top: 36px; }
+    .passos { grid-template-columns: minmax(0, 1fr); margin-top: 40px; }
+    .baixar { width: 100%; justify-content: center; }
   }
 </style>
 </head>
 <body>
 
-<div id="texto"></div>
+<main>
+  <img class="logo" src="logo.svg" alt="WH Soluções em Informática" width="360" height="140">
+
+  <h1>Suporte Remoto</h1>
+  <p class="intro">Baixe o programa abaixo para que nossa equipe possa ajudar você diretamente no seu computador.</p>
+
+  <!-- Para trocar o programa, altere o href abaixo para o nome do arquivo enviado ao repositório -->
+  <a class="baixar" href="WH-Suporte.exe" download>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 20h14"/>
+    </svg>
+    Baixar programa de suporte
+  </a>
+  <p class="info">Para Windows</p>
+  <p class="aviso" id="aviso">Parece que você não está em um computador com Windows. Abra esta página no computador que vai receber o suporte.</p>
+
+  <ol class="passos">
+    <li>
+      <span class="num">1</span>
+      <h2>Baixe</h2>
+      <p>Clique no botão acima e salve o programa no seu computador.</p>
+    </li>
+    <li>
+      <span class="num">2</span>
+      <h2>Abra</h2>
+      <p>Execute o arquivo baixado. Se o Windows pedir confirmação, clique em “Sim”.</p>
+    </li>
+    <li>
+      <span class="num">3</span>
+      <h2>Informe o código</h2>
+      <p>Passe ao técnico o número de identificação que aparecer na tela.</p>
+    </li>
+  </ol>
+
+  <p class="seguranca">O acesso só acontece com a sua autorização e pode ser encerrado por você a qualquer momento, fechando o programa.</p>
+</main>
+
+<footer>WH Soluções em Informática</footer>
 
 <script>
-const MONOLOGO = `
-E eu estou me segurando firme
-a um mundo que perdeu o rumo
-Enquanto eles me cobram pelos anos
-que eu não posso mais pagar... `; 
-
-  // ===== AJUSTES =====
-  const VELOCIDADE   = 350;   // tempo entre cada palavra (ms) — maior = mais devagar
-  const PAUSA_PONTO  = 1200;  // pausa extra depois de . ! ? …
-  const PAUSA_VIRGULA = 400;  // pausa extra depois de , ; :
-  const MARCA_PAUSA  = "|";   // caractere de pausa invisível (não aparece na tela)
-  const PAUSA_MARCA  = 600;   // duração de cada marca — use || ou ||| para pausas maiores
-  const ATRASO_INICIO = 1500; // espera antes de começar (ms)
-  const REPETIR      = false; // true = recomeça sozinho no final
-  const PAUSA_FINAL  = 6000;  // tempo na tela antes de recomeçar (se REPETIR = true)
-  // ===================
-
-  const box = document.getElementById("texto");
-  const esperar = ms => new Promise(r => setTimeout(r, ms));
-
-  function montar() {
-    box.innerHTML = "";
-    const palavras = []; // { s: <span>, extra: ms }
-    const marcas = new RegExp(MARCA_PAUSA.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g");
-    let inicial = 0; // marcas antes da primeira palavra
-    MONOLOGO.trim().split("\n").forEach((linha, i, todas) => {
-      linha.trim().split(/\s+/).filter(Boolean).forEach(p => {
-        const n = (p.match(marcas) || []).length;
-        const limpa = p.replace(marcas, "");
-        if (limpa === "") {
-          if (palavras.length) palavras[palavras.length - 1].extra += n * PAUSA_MARCA;
-          else inicial += n * PAUSA_MARCA;
-          return;
-        }
-        const s = document.createElement("span");
-        s.textContent = limpa;
-        box.appendChild(s);
-        box.appendChild(document.createTextNode(" "));
-        palavras.push({ s, extra: n * PAUSA_MARCA });
-      });
-      if (i < todas.length - 1) box.appendChild(document.createElement("br"));
-    });
-    palavras.inicial = inicial;
-    return palavras;
-  }
-
-  async function tocar() {
-    do {
-      const palavras = montar();
-      await esperar(ATRASO_INICIO + palavras.inicial);
-      for (const { s, extra } of palavras) {
-        s.classList.add("on");
-        let t = VELOCIDADE + extra;
-        if (/[.!?…]$/.test(s.textContent)) t += PAUSA_PONTO;
-        else if (/[,;:]$/.test(s.textContent)) t += PAUSA_VIRGULA;
-        await esperar(t);
-      }
-      if (REPETIR) {
-        await esperar(PAUSA_FINAL);
-        palavras.forEach(({ s }) => s.classList.remove("on"));
-        await esperar(1600);
-      }
-    } while (REPETIR);
-  }
-
-  tocar();
+  try {
+    var ua = navigator.userAgent || "";
+    if (!/Windows/i.test(ua)) document.getElementById("aviso").classList.add("on");
+  } catch (e) {}
 </script>
 </body>
 </html>
